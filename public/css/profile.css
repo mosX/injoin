@@ -1,0 +1,95 @@
+
+
+.profile.inner .leftside .title{
+    color: #cacccd;
+    font-size: 18px;
+    font-weight:bolder;
+}
+.profile.inner .leftside ul li{
+    margin:10px 0px;
+    height:40px;
+}
+.profile.inner .leftside ul li a{
+    padding-top:6px;
+    display:block;
+    width:100%;
+    height:100%;
+
+    border-left:4px solid transparent;
+    color: black;
+    padding-left:15px;
+    font-weight:bolder;
+    font-size:20px;
+}
+.profile.inner .leftside ul li.active a,.profile.inner .leftside ul li:hover a{
+    border-left:4px solid #0065a6;
+    color:#0065a6; 
+    background: #ddd;
+}
+
+.profile.inner .rightside{
+    display:inline-block;
+    vertical-align: top;
+    
+    width:890px;
+    height:100%;
+}
+
+form ul li{
+    margin:10px 0px;
+}
+
+form ul li input[type=text],form ul li textarea,form ul li select{
+    width:100%;
+}
+form ul li textarea{
+    resize: none;
+}
+
+form label{
+    color: #0065a6;
+    font-weight:bolder;
+    width:auto;
+    display:inline-block;
+    vertical-align: middle;
+}
+/*******RIGHTSIDE********/
+
+
+.rightside .block .ava{
+    width:200px;
+    height:200px;
+    display:inline-block;
+    border:2px solid black;
+    background: #ddd;
+    box-sizing: initial;
+}
+.rightside .block .ava .table{
+    width:100%;
+    height:100%;
+}
+.rightside .block .ava .table .cell{
+    width:200px;
+    height:200px;
+    vertical-align: middle;
+    text-align: center;
+}
+.rightside .block .ava .table .cell img{
+    max-height:200px;
+    max-width:200px;
+}
+.rightside .block .info{
+    display:inline-block;
+    vertical-align: top;
+    margin-left:20px;
+}
+.rightside .block .info ul li{
+    margin:8px 0px;
+    color: #777;
+    font-weight:bolder;
+}
+.rightside .block .info ul li label{
+    width:150px;
+    font-weight:normal;
+    display:inline-block;
+}

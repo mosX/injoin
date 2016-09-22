@@ -1,0 +1,62 @@
+.advertisement.inner .leftside{
+    width:250px;
+    height:100%;
+    display:inline-block;
+    vertical-align: top;
+    
+}
+.advertisement.inner .leftside .title{
+    color: #cacccd;
+    font-size: 18px;
+    font-weight:bolder;
+}
+.advertisement.inner .leftside ul li{
+    margin:10px 0px;
+    height:40px;
+}
+.advertisement.inner .leftside ul li a{
+    padding-top:6px;
+    display:block;
+    width:100%;
+    height:100%;
+
+    border-left:4px solid transparent;
+    color: black;
+    padding-left:15px;
+    font-weight:bolder;
+    font-size:20px;
+}
+.advertisement.inner .leftside ul li.active a,.advertisement.inner .leftside ul li:hover a{
+    border-left:4px solid #0065a6;
+    color:#0065a6; 
+    background: #ddd;
+}
+
+.advertisement.inner .rightside{
+    display:inline-block;
+    vertical-align: top;
+    border-left:1px solid #ddd;
+    width:940px;
+    height:100%;
+    padding-left:20px;
+    padding-bottom:40px;
+}
+
+form ul li{
+    margin:10px 0px;
+}
+
+form ul li input[type=text],form ul li textarea,form ul li select{
+    width:100%;
+}
+form ul li textarea{
+    resize: none;
+}
+
+form label{
+    color: #0065a6;
+    font-weight:bolder;
+    width:200px;
+    display:inline-block;
+    vertical-align: middle;
+}

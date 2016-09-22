@@ -1,0 +1,16 @@
+// @import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
+
+$blue: #3bbfce; /* цвет */
+$margin: 16px; /* отступ */
+$fontSize: 14px; /* размер текста */
+
+.content {
+	border: 1px solid $blue; /* синий бордюр */
+	color: darken($blue, 20%); /* затемнение цвета на 20% */
+}
+
+.border {
+	padding: $margin / 2;
+	margin: $margin / 2;
+	border-color: $blue;
+}

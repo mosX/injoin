@@ -1,0 +1,171 @@
+@font-face {
+    font-family: "Airglyphs";
+    font-style: normal;
+    font-weight: normal;
+    src: url("/fonts/airglyphs-ie8-9ca8f3582e7369a0916ba237112a2bd9.eot?#") format("eot"), url("/fonts/airglyphs-9a766269b6757f649830fe77c6b32dfa.woff") format("woff"), url("/fonts/airglyphs-d1fdd4e4cffc366d1acc1c69fa4ea3d0.ttf") format("truetype"), url("/fonts/airglyphs-4beac99928f9ec51f6e2c13e1d0f2ea4.svg") format("svg");
+} 
+html, body{
+    height:100%;
+    min-height:100%;
+}
+*{
+    margin:0px;
+    padding:0px;
+    box-sizing: border-box;
+    font-size: 16px;
+    font-family: Calibri;
+}
+
+.page-heading{
+        font-size:26px; 
+        font-weight: bolder;
+        margin-bottom:20px;
+    }
+
+.label{
+    color: black;
+}
+.form{
+    max-width:800px;
+}
+.form .label{
+    white-space: normal;
+    font-size:14px;
+    display:block;
+    margin-bottom:2px;
+    color: black;
+    text-align: left;
+}
+#wraper{
+    height:100%;
+    
+}
+a{
+    color: #0065a6;
+    text-decoration: none;
+}
+ul{
+    list-style: none;
+}
+.error{
+    color:red;
+    font-weight:bolder;
+}
+
+.image_preview{
+    width:150px;
+    height:150px;
+    display:table-cell;
+    vertical-align: middle;
+    text-align: center;
+}
+.image_preview img{
+    max-width:150px;
+    max-height:150px;
+}
+
+.container{
+    width:1200px;
+}
+
+.pagetitle{
+    margin:10px 0px;
+    color: #13c6ec;
+    font-weight:bolder;
+    font-size:28px;
+}
+
+.content{
+    display:table;
+    height:auto;
+    width:100%;
+    position:relative;
+}
+.maincontent{
+    /*max-width:800px;*/
+    width:100%;
+    min-height:600px;
+    padding:30px;
+}
+
+.sub-content{
+    display:table-cell;
+    width:100%;
+    height:auto;
+    position:relative;
+}
+
+.btn.btn-blue{
+    background: #0065a6 none repeat scroll 0 0;
+    color: white;
+    cursor: pointer;
+    font-size:18px;
+    font-weight: bolder;
+    height:40px;
+    padding: 4px 30px;
+    text-align: center;
+}
+.btn.btn-green{
+    background: #13ac54 none repeat scroll 0 0;
+    color: white;
+    cursor: pointer;
+    font-size:18px;
+    font-weight: bolder;
+    height:40px;
+    padding: 4px 30px;
+    text-align: center;
+}
+
+.btn.btn-red{
+    background: #db4d4d none repeat scroll 0 0;
+    color: white;
+    cursor: pointer;
+    font-size:18px;
+    font-weight: bolder;
+    height:40px;
+    padding: 4px 30px;
+    text-align: center;
+}
+
+input.btn.btn-blue{
+    padding-top:0px;
+}
+
+.btn.btn-orange{
+    background: rgba(0, 0, 0, 0) linear-gradient(to bottom, #f9d515, #f09415) repeat scroll 0 0;
+    border: medium none;
+    border-radius: 20px;
+    color: black;
+    font-weight: bold;
+    height: 32px;
+    padding-left: 25px;
+    padding-right: 25px;
+}
+
+#hiddenIframeUpload {
+    left: 0;
+    opacity: 0;
+    position: absolute;
+    top: 0;
+}
+
+.uploadFileBtn {
+    -moz-user-select: none;
+    background-color: #ffffff;
+    border: 1px solid #959595;
+    border-radius: 2px;
+    color: #4b5761;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 15px;
+    font-weight: bold;
+    height: 40px;
+    line-height: 1.43;
+    margin-bottom: 0;
+    overflow: hidden;
+    padding: 7px 31px;
+    position: relative;
+    text-align: center;
+    vertical-align: middle;
+    white-space: nowrap;
+}
