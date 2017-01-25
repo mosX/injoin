@@ -19,7 +19,9 @@ class Seat extends Model{
         $row->x_pos = $post->x;
         $row->y_pos = $post->y;
         $row->date = date('Y-m-d H:i:s');
-        return $row->save();
+        $row->save();
+        
+        return $row->id;
     }
     
     public static function editInfo($id, $post){

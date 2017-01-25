@@ -65,7 +65,7 @@
     </style>
     
     <script>
-        app.controller('mainCtrl', function($scope){
+        app.controller('seatsCtrl', function($scope){
             $scope.start_x = 0;
             $scope.start_y = 0;
 
@@ -73,6 +73,8 @@
             $scope.mouse_y = 0;
             $scope.pos_x = 0;
             $scope.pos_y = 0;
+            
+            $scope.move_status = false;
 
             $scope.height = 0;
             $scope.width = 0;
@@ -108,8 +110,22 @@
                 $('#y2').val($scope.pos_y);
             }
             
-            $('.tools .item').mousedown(function(){     //выбор из предложеныъ инструментов
-                $scope.status = 1;
+            $('.tools .item').mousedown(function(e){     //выбор из предложеныъ инструментов                
+                var mouse_x = e.pageX;
+                var mouse_y = e.pageY;
+                
+                var rect = $(this)[0].getBoundingClientRect();
+                
+                var parent = $('.maincontent')[0].getBoundingClientRect();
+                
+                $scope.item_margin_pos_x = mouse_x - rect.x;
+                $scope.item_margin_pos_y = mouse_y - rect.y;
+                
+                var left = mouse_x - $scope.item_margin_pos_x  - parent.x;
+                var top = mouse_y - $scope.item_margin_pos_y  - parent.y;
+                
+                //$scope.status = 1;
+                $scope.move_status = true;
                 $('.selected_element').empty();
                 
                 $scope.height = parseInt($(this).css('height'));
@@ -117,9 +133,34 @@
                 var el = $(this).clone();
                 
                 $('.selected_element').append(el);
+                
+                
                                 
                 $('.selected_element').css({'display':'block'});
-                $('.selected_element').css({'left':$scope.mouse_x-$scope.width,'top':$scope.mouse_y-$scope.height});
+                $('.selected_element').css({'background':'red','left':left+'px','top':top+'px'});
+            });
+            
+            $('.maincontent').mousemove(function(e){
+                var mouse_x = e.pageX;
+                var mouse_y = e.pageY;
+                    
+                if($scope.move_status > 0){ //если мы нажали на елемент выбора
+                    var parent = $('.maincontent')[0].getBoundingClientRect();
+    
+                    var left = mouse_x - $scope.item_margin_pos_x  - parent.x;
+                    var top = mouse_y - $scope.item_margin_pos_y  - parent.y;
+                    
+                    $('.selected_element').css({'left':left,'top':top});
+                }
+                
+                if($scope.item_id > 0){ //для существующего елемента
+                    var parent = $('.maincontent #canvas')[0].getBoundingClientRect();
+    
+                    var left = mouse_x - $scope.item_margin_pos_x  - parent.x;
+                    var top = mouse_y - $scope.item_margin_pos_y  - parent.y;
+                    
+                    $('#canvas .item[data-id='+$scope.item_id+']').css({'position':'absolute','left':left,'top':top});
+                }
             });
             
             $('body').mouseup(function(e){
@@ -129,74 +170,76 @@
             });
             
             
-            $scope.saveItemPosition = function(){   //сохраняем позицию объекта
+            $scope.saveItemPosition = function(e){   //сохраняем позицию объекта
                 $scope.getCanvaPos();
-                if($scope.status == 1){
-                    if($scope.pos_x < 0 || $scope.pos_y < 0) return false;
-
-                    $scope.status = 0;
+                
+                if($scope.move_status == true){
+                    //if($scope.pos_x < 0 || $scope.pos_y < 0) return false;
+                    
+                    $scope.move_status = false;
                     var el = $('.selected_element .item');
-                    $(el).css({'position':'absolute','left':$scope.pos_x-$scope.width,'top':$scope.pos_y-$scope.height});
-                    $('#canvas').append(el);
+                    var parent = $('.maincontent #canvas')[0].getBoundingClientRect();
+                    
+                    var mouse_x = e.pageX;
+                    var mouse_y = e.pageY;
+                    
+                    var left = mouse_x - parent.x;
+                    var top = mouse_y - parent.y;
+                    
+                    //выравниваем по сетке с допуском 50 на 50
+                    left = Math.floor(left / 50);
+                    top = Math.floor(top / 50);
+                    
+                    $(el).css({'position':'absolute','left':(left*50),'top':(top*50)});
+                    //$('#canvas').append(el);
 
                     $.ajax({
                         url:location.href,
                         type:'POST',
-                        data:{x:$scope.pos_x-$scope.width , y:$scope.pos_y-$scope.height},
+                        data:{x:left , y:top},
                         success:function(msg){
-
+                            var json = JSON.parse(msg);
+                            if(json.status == 'success'){
+                                $('#canvas').append(
+                                    '<div data-id="4" class="seat item" ng-mousedown="moveItems($event)" style="position:absolute; top:'+(top*50)+'px;left:'+(left*50)+'px">'
+                                    +'<a href="" class="edit"></a>'
+                                    +'<div class="number"></div>'
+                                    +'</div>'
+                                );
+                            }else{
+                                
+                            }
                         }
                     });
                 }
                 
-                if($scope.item_id){
+                if($scope.item_id){ //меняем позицию уже соществующего
                     var el = $('#canvas .item[data-id='+$scope.item_id+']');
                     
-                    var x = $scope.pos_x-$scope.width;
-                    var y = $scope.pos_y-$scope.height;
+                    var item_id = $scope.item_id;
+                    $scope.item_id = 0;
                     
-                    $(el).css({'position':'absolute','left':x,'top':y});
-                                        
+                    var x_pos = Math.floor((parseInt($(el).css('left')) + $scope.item_margin_pos_x)/50);
+                    var y_pos = Math.floor((parseInt($(el).css('top'))  + $scope.item_margin_pos_y)/50);
+                    
+                    $(el).css({'position':'absolute','left':(x_pos*50),'top':(y_pos*50)});
+                    
                     $.ajax({
                         url:'/transfer/seats/1/edit',
                         type:'POST',
-                        data:{x:x , y:y,seat_id:$scope.item_id},
-                        success:function(msg){
-                            
-                            $scope.item_id = 0; 
+                        data:{x:x_pos , y:y_pos,seat_id:item_id},
+                        success:function(msg){                            
+                            //$scope.item_id = 0; 
                         }
                     });
                 }
             }
             
-            $('.maincontent').mousemove(function(e){
-                $scope.getCanvaPos();
+            $scope.moveItems = function(e){
+                var el = e.target;
                 
-                var params = $(this)[0].getBoundingClientRect();
-                $scope.start_x = params.x;
-                $scope.start_y = params.y;
-                
-                $scope.mouse_x = e.clientX - $scope.start_x;
-                $scope.mouse_y = e.clientY - $scope.start_y;
-                                
-                $('#x').val($scope.mouse_x);
-                $('#y').val($scope.mouse_y);
-                if($scope.status == 1){
-                    $('.selected_element').css({'left':$scope.mouse_x-$scope.width,'top':$scope.mouse_y-$scope.height});
-                }
-                
-                if($scope.item_id > 0){
-                    $('#canvas .item[data-id='+$scope.item_id+']').css({'position':'absolute','left':$scope.pos_x-$scope.width,'top':$scope.pos_y-$scope.height});
-                }
-            });
-            
-           
-            
-            $scope.moveItems = function($event){
-                var el = $event.target;
-                
-                if($($event.target).attr('class') == undefined) return;
-                if($($event.target).attr('class').indexOf('edit') != -1){
+                //if($($event.target).attr('class') == undefined) return;
+                /*if($($event.target).attr('class').indexOf('edit') != -1){
                     $scope.element_id = $(el).parent('.item').attr('data-id');
                     
                     $.ajax({
@@ -212,30 +255,43 @@
                             $('#seatEditModal').modal('show');
                         }
                     });
-                }
+                }*/
                 
-                if($($event.target).attr('class').indexOf('item') != -1){
+                if($(el).attr('class').indexOf('item') != -1){
                     $scope.item_id = $(el).attr('data-id');
-
+                        
                     $scope.height = $(el).height();
                     $scope.width = $(el).width();
-
-                    var x = $scope.pos_x-$scope.width;
-                    var y = $scope.pos_y-$scope.height;
-
-                    $(el).css({'position':'absolute','left':x,'top':y});
+                    
+                    var mouse_x = e.pageX;
+                    var mouse_y = e.pageY;
+                    var parent = $('.maincontent #canvas')[0].getBoundingClientRect();
+                    var element = $(el)[0].getBoundingClientRect();
+                    
+                    $scope.item_margin_pos_x = mouse_x - element.x;
+                    $scope.item_margin_pos_y = mouse_y - element.y;
+                    
+                    var left = mouse_x - parent.x - $scope.item_margin_pos_x;
+                    var top = mouse_y - parent.y - $scope.item_margin_pos_y;
+                    
+                    $(el).css({'position':'absolute','left':left,'top':top});
                 }
             }
-            
-            $('#canvas').on('.item','doubleclick',function(){
-                
+             
+            $('#canvas').on('mousedown','.item',function(e){
+               ////ng-mousedown="moveItems($event)" 
+               $scope.moveItems(e);
+               //console.log('test');
             });
+            /*$('#canvas').on('.item','doubleclick',function(){
+                
+            });*/
         });
     </script>
 
     
     
-    <div id="seats" ng-controller="mainCtrl">
+    <div id="seats" ng-controller="seatsCtrl">
 
         <input type="text" value="" ng-model="element_id">
         
@@ -252,18 +308,16 @@
             </ul>
         </div>
 
-        <div id="canvas" ng-mouseup="saveItemPosition()" ng-mousedown="moveItems($event)">
+        <div id="canvas" ng-mouseup="saveItemPosition($event)"  style="overflow: hidden">
             <?php if($data){ ?>
                 <?php foreach($data as $item){ ?>
-                    <div data-id="<?=$item->id?>" class="seat item" style="position:absolute; top:<?=$item->y_pos?>px;left:<?=$item->x_pos?>px">
+                    <div data-id="<?=$item->id?>" class="seat item"  style="position:absolute; top:<?=$item->y_pos*50?>px;left:<?=$item->x_pos*50?>px">
                         <a href="" class="edit"></a>
                         <div class="number"><?=$item->number?></div>
                     </div>
                 <?php } ?>
             <?php } ?>
         </div>
-    
-    
     
             <div class="modal fade" id="seatEditModal" tabindex="-1" role="dialog">
                <div class="modal-dialog" role="document">

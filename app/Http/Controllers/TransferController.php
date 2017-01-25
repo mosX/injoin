@@ -40,6 +40,11 @@ class TransferController extends Controller{
         //return view('transfer.create',['data'=>null,'errors'=>null,'post'=>null]);
     }
     
+    public function view(){
+        $list = Transfer::getMyList();
+        return view('transfer.view',['data'=>$list]);
+    }
+    
     public function seats($id){
         $data = Seat::get($id);
         return view('transfer.seats',['data'=>$data,'errors'=>null,'post'=>null]);
@@ -63,8 +68,9 @@ class TransferController extends Controller{
     }
     
     public function seats_post($id,Request $post){
-        if(Seat::add($id,$post)){
-            return '{"status":"success"}';
+        $id = Seat::add($id,$post);
+        if($id){
+            return '{"status":"success","id":"'.$id.'"}';
         }else{
             return '{"status":"error"}';
         }

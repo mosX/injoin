@@ -135,7 +135,16 @@
         </div>
         
         <div class="panel {{$rout == "transfer.create" ? "active":""}}">
-            <a href="/transfer/create/">СОЗДАТЬ ТРАНСПОРТ</a>
+            <a  data-toggle="collapse" data-parent="#sidebar" href="#collapse2">ТРАНСПОРТ</a>
+            
+            <ul aria-expanded="false" id="collapse2" class="panel-collapse collapse {{explode('.',$rout)[0] == "transfer" ? "in":""}}">
+                <li class="{{$rout == "transfer.create" ? "active":""}}">
+                    <a href="/transfer/create/">Создать транспорт</a>
+                </li>
+                <li class="{{$rout == "transfer.list" ? "active":""}}">
+                    <a href="/transfer/view/">Мой транспорт</a>
+                </li>
+            </ul>
         </div>
         
         <div class="panel {{$rout == "advertisement.create" ? "active":""}}">

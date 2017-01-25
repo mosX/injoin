@@ -15,7 +15,13 @@ class Transfer extends Model{
     /*public function advertisement(){    //связь с таблицей картинок
         return $this->hasOne('App\Models\Advertisement','id','adv_id');
     }*/
-    
+
+    public static function getMyList(){
+        $rows = self::where('user_id','=',Auth::user()->id)->orderBy('id','DESC')->get();
+        
+        return $rows;
+    }
+
     public static function getAll(){
         $rows = self::orderBy('id','DESC')->get();
         

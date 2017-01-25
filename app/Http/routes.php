@@ -9,8 +9,11 @@
             Route::get('/transfer/create/', ['as' => 'transfer.create', 'uses' => 'TransferController@create']);
             Route::post('/transfer/create/', ['as' => 'transfer.create_post', 'uses' => 'TransferController@create_post']);
             
+            Route::get('/transfer/view/', ['as' => 'transfer.view', 'uses' => 'TransferController@view']);
+            
             Route::get('/transfer/seats/{id}/', ['as' => 'transfer.seats', 'uses' => 'TransferController@seats']);
             Route::post('/transfer/seats/{id}/', ['as' => 'transfer.seats_post', 'uses' => 'TransferController@seats_post']);
+            
             Route::post('/transfer/seats/{id}/edit', ['as' => 'transfer.seats_edit', 'uses' => 'TransferController@seats_edit']);
             Route::get('/transfer/seats/{id}/modal/{seat}', ['as' => 'transfer.seats_modal', 'uses' => 'TransferController@seats_modal']);
             
