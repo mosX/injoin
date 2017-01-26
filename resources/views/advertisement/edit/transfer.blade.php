@@ -35,8 +35,8 @@
         }
         
         .seat{
-            width:40px;
-            height:40px;
+            width:20px;
+            height:20px;
             background: black;
             cursor:pointer;
         }
@@ -57,6 +57,9 @@
     </style>
     <script>
         app.controller('transferCtrl', function($scope){
+            $scope.transfer_id = '0';
+            $scope.seats = [];
+            
             $scope.addTransfer = function(){
                 $.ajax({
                     url:location.href,
@@ -68,15 +71,16 @@
                 });
             }
             
-            $scope.previewTransfer = function($event){
-                console.log($event);
-                console.log($scope.transfer_id);
+            $scope.previewTransfer = function($event){                
                 $.ajax({
                     url:'/advertisement/edit/transfer_preview/'+$scope.transfer_id,
                     type:'GET',
                     success:function(msg){
-                        
-                        $('#preview').html(msg);
+                        //$('#preview').html(msg);
+                        var json = JSON.parse(msg);
+                        console.log(json);
+                        $scope.seats = json;
+                        $scope.$digest();
                     }
                 });
             }
@@ -108,7 +112,12 @@
             
             <div class="form-group">
                 <div id="preview">
-            
+                    <div id="canvas" ng-mouseup="saveItemPosition()" ng-mousedown="moveItems($event)">                        
+                        <div ng-repeat="item in seats" data-id="@{{item.id}}" class="seat item" style="position:absolute; top:@{{item.y_pos*30}}px;left:@{{item.x_pos*30}}px">
+                            
+                        </div>                        
+                    </div>
+
                 </div>
             </div>
             
@@ -117,7 +126,7 @@
                 <?php foreach($transfers as $item){ ?>
                     <div id="canvas" ng-mouseup="saveItemPosition()" ng-mousedown="moveItems($event)">
                         <?php foreach($item->seats as $seat){ ?>
-                            <div data-id="<?=$seat->id?>" class="seat item" style="position:absolute; top:<?=$seat->y_pos?>px;left:<?=$seat->x_pos?>px">
+                            <div data-id="<?=$seat->id?>" class="seat item" style="position:absolute; top:<?=$seat->y_pos*30?>px;left:<?=$seat->x_pos*30?>px">
                                 <div class="number"><?=$seat->number?></div>
                             </div>
                         <?php } ?>

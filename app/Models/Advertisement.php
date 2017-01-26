@@ -101,8 +101,7 @@ class Advertisement extends Model{
     }
     
     public static function getCurrent($id){
-        $data = Advertisement::with('image','images','tags')->where('id','=',$id)
-                
+        $data = Advertisement::with('image','images','tags')->where('id','=',$id)                
                 //->where('user_id','=',Auth::user()->id)
                 ->limit(1)
                 ->get();
@@ -125,6 +124,21 @@ class Advertisement extends Model{
             //'body.required'  => 'A message is required',
         ];
     }*/
+    
+    static function changeCoords($lat, $lng, $id){
+         $data = Advertisement::where('id','=',$id)                
+                //->where('user_id','=',Auth::user()->id)
+                ->limit(1)
+                ->get();
+         $data[0]->lat = $lat;
+         $data[0]->lng = $lng;
+         $data[0]->save();
+         
+        /*$data = self::where('user_id' ,'=', Auth::user()->id)
+                ->where('end_date','>','"'.date("Y-m-d H:i:s".'"'))
+                ->where('end_date','!=','0000-00-00 00:00:00')  
+                ->get();*/
+    }
     
     public function addNew($post){
         $row = new self();

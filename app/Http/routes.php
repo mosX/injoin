@@ -10,6 +10,7 @@
             Route::post('/transfer/create/', ['as' => 'transfer.create_post', 'uses' => 'TransferController@create_post']);
             
             Route::get('/transfer/view/', ['as' => 'transfer.view', 'uses' => 'TransferController@view']);
+            Route::get('/transfer/view/{id}', ['as' => 'transfer.view', 'uses' => 'TransferController@view_seats']);
             
             Route::get('/transfer/seats/{id}/', ['as' => 'transfer.seats', 'uses' => 'TransferController@seats']);
             Route::post('/transfer/seats/{id}/', ['as' => 'transfer.seats_post', 'uses' => 'TransferController@seats_post']);
@@ -47,9 +48,11 @@
                     Route::get('/description/{id}', ['as' => 'description', 'uses' => 'AdvertisementController@edit_description']);
                     Route::post('/description/{id}', ['as' => 'description_post', 'uses' => 'AdvertisementController@edit_description_post']);
                         
-                    Route::get('/address/{id}', ['as' => 'address', 'uses' => 'AdvertisementController@edit_address']);    
+                    Route::get('/address/{id}', ['as' => 'address', 'uses' => 'AdvertisementController@edit_address']);
+                    Route::post('/address/{id}', ['uses' => 'AdvertisementController@edit_address_post']);
+                    
                     Route::get('/advanced/{id}', ['as' => 'advanced', 'uses' => 'AdvertisementController@edit_advanced']);                    
-                });
+                 });
             });
             
             //PROFILE

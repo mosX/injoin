@@ -44,6 +44,14 @@ class TransferController extends Controller{
         $list = Transfer::getMyList();
         return view('transfer.view',['data'=>$list]);
     }
+    public function view_seats($id){
+        //$list = Transfer::getMyList();
+        
+        $data = Seat::get($id);
+        echo json_encode($data);
+        
+        //return view('transfer.view',['data'=>$data]);
+    }
     
     public function seats($id){
         $data = Seat::get($id);

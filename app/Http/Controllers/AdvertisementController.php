@@ -50,9 +50,10 @@ class AdvertisementController extends Controller{
     
     public function transfer_preview($id){
         $data = Seat::get($id);
-        return view('advertisement.edit.transfer_preview',[
+        echo json_encode($data);
+        /*return view('advertisement.edit.transfer_preview',[
                 "data"=>$data
-            ]);
+            ]);*/
     }
     
     public function add_transfer($id, Request $post){
@@ -139,6 +140,15 @@ class AdvertisementController extends Controller{
         return view('advertisement.edit.address',['id'=>$id,'data'=>$data]);
     }
     
+    public function edit_address_post(Request $request,$id){
+                //$adertisement = new Advertisement();
+        Advertisement::changeCoords($request->lat,$request->lng,$id);
+        
+        return Redirect::route('advertisement.edit.address',['id'=>$id]);
+
+        //return view('advertisement.edit.address',['id'=>$id,'data'=>$data]);
+    }
+    
     public function edit_photo($id){
         //$adertisement = new Advertisement();
         $data = Advertisement::getCurrent($id);
@@ -174,7 +184,7 @@ class AdvertisementController extends Controller{
         
     public function edit_description($id){
         //$adertisement = new Advertisement();
-        $data = Advertisement::getCurrent($id);
+        $data = Advertisement::getCurrent($id); 
 
         return view('advertisement.edit.description',['data'=>$data,'id'=>$id]);
     }
