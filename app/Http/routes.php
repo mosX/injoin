@@ -34,13 +34,17 @@
                 //ADVERTISEMENT EDIT
                 Route::group(['prefix' => 'edit', 'as' => 'edit.'], function(){
                     Route::get('/transfer_preview/{id}', ['uses' => 'AdvertisementController@transfer_preview']);
+                    Route::get('/transfer_remove/{id}', ['uses' => 'AdvertisementController@transfer_remove']);
                     Route::get('/transfer/{id}', ['as' => 'transfer', 'uses' => 'AdvertisementController@edit_transfer']);
                     Route::post('/transfer/{id}', ['uses' => 'AdvertisementController@add_transfer']);
                     
                     Route::get('/common/{id}', ['as' => 'common', 'uses' => 'AdvertisementController@edit_common']);                    
-                    Route::post('/common/{id}',['as' => 'common_post', 'uses' => 'AdvertisementController@edit_common_post']);
+                    Route::post('/common/{id}',['uses' => 'AdvertisementController@edit_common_post']);
 
                     Route::get('/photo/{id}', ['as' => 'photo', 'uses' => 'AdvertisementController@edit_photo']);                    
+                    Route::get('/photo/setcover/{image_id}/{adv_id}', ['uses' => 'AdvertisementController@setalbumcover']);
+                    Route::get('/photo/remove/{image_id}', ['uses' => 'AdvertisementController@removeimage']);
+                    
                     
                     Route::get('/addphoto/{id}', [ 'as' => 'addphoto',  'uses' => 'AdvertisementController@addphoto_get']);
                     Route::post('/addphoto/{id}', [ 'as' => 'addphoto',  'uses' => 'AdvertisementController@addphoto_post']);

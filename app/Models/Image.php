@@ -7,11 +7,48 @@ use Validator;
 use Hash;
 
 use App\Http\Middleware\Auth;
+use App\Models\Advertisement;
 
 
 class Image extends Model{
     public $timestamps = false;
     
+    static function remove($image_id){
+        //получаем такой имидж что бы проверить или он существует ну и получить объект
+        $image = self::where('id','=',$image_id)->get();
+        
+        //сначала нужно проверить или он не находится в обложке
+        $adv = Advertisement::where('cover','=',$image_id)->where('user_id','=',Auth::user()->id)->get();
+        if(!$adv->isEmpty()){
+            $adv[0]->cover = 0;
+            $adv[0]->save();
+        }
+        
+        //нужно подчистить файл        
+        //з()
+        $path = public_path('assets'.DIRECTORY_SEPARATOR.Auth::user()->id.DIRECTORY_SEPARATOR.$image[0]->adv_id.DIRECTORY_SEPARATOR);
+        if(file_exists($path.$image[0]->name)) unlink($path.$image[0]->name);
+        if(file_exists($path.'small'.$image[0]->name)) unlink($path.'small'.$image[0]->name);
+        if(file_exists($path.'thumb'.$image[0]->name)) unlink($path.'thumb'.$image[0]->name);
+        
+        return $image[0]->delete();
+    }
+    
+    static function setCover($image_id, $adv_id){
+        //проверяем или есть такое изображение у данного пользователя
+        $image = self::where('id' ,'=', $image_id)
+                    ->where('user_id' ,'=', Auth::user()->id)
+                    ->where('status' ,'=', 1)
+                    ->limit('1')->get();
+        
+        if($image->isEmpty())return false;
+        
+        $advertisements = Advertisement::where('id','=',$adv_id)->where('user_id','=',Auth::user()->id)->get();
+        $advertisements[0]->cover = $image_id;
+        
+        return $advertisements[0]->save();
+    }
+
     public function addPhoto($id, $filename){
         $row = new self();
         $row->user_id = Auth::user()->id;

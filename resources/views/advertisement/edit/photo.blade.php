@@ -76,10 +76,48 @@
             +'</div>');
     }
 </script>
+<script>
+    app.controller('albumCtrl', function($scope,$http){
+        $scope.album = <?=$id?>;
+        console.log($scope.album);
+        $scope.setCover = function(id,event){
+            var req = {
+                url: '/advertisement/edit/photo/setcover/'+id+'/'+$scope.album,
+                method: 'GET',
+                responseType: 'text',
+            };
+            $http(req).then(function(ret){
+                //$scope.seats = ret.data;
+                if(ret.data.status == 'success'){
+                    location.reload();
+                }
+            });
+            
+            event.preventDefault();
+        }
+        
+        $scope.remove = function(id,event){
+            var req = {
+                url: '/advertisement/edit/photo/remove/'+id,
+                method: 'GET',
+                responseType: 'text',
+            };
+            $http(req).then(function(ret){
+                //$scope.seats = ret.data;
+                /*if(ret.data.status == 'success'){
+                    location.reload();
+                }*/
+            });
+            
+            event.preventDefault();
+        }
+    });
+</script>
+<div ng-controller="albumCtrl">
     <div class="form_block">
         <div class="preview">
             <div class='image' style='width:100%;height:100%;'>
-                <?php if(!$data){ ?>
+                <?php if($data){ ?>
                     <img src='/assets/adv/<?=Auth::user()->id?>/<?=$id?>/thumb{{$data->image->name}}'>
                 <?php }else{ ?>
                     <img src='/images/noimage.jpg'>
@@ -90,35 +128,63 @@
         <iframe width="0" height="0" class="addphoto_frame" src="/advertisement/edit/addphoto/{{$id}}/" style="display: none;"></iframe>
         <a href="" class="btn btn-blue photo_action" style="padding-top:4px;">Загрузить</a>
             
-        <div class="error"></div>    
+        <div class="error"></div>
     </div>
 
     <style>
         .images{
             margin-top:20px;
         }
-       
         
         .images .element img{
-            
             vertical-align: middle;
             max-width:200px;
             max-height:200px;
         }
         
         .images .item{
+            position:relative;
             display:inline-block;
             border: 1px solid black;
             margin:0px 10px;
+        }
+        .images .item:hover .edit{
+            display:block;
+        }
+        .images .item .edit{
+            display:none;
+            color: green;
+            position: absolute;
+            top:5px;
+            right:5px;
+            background: white;
+            width:24px;
+            height: 24px;
+            border-radius: 15px;
+            padding:4px;
+            box-shadow: 1px 1px 5px black;
+            cursor:pointer;
+        }
+        .images .item .dropdown-menu{
+            top:40px;
         }
     </style>
     <div class="images">
         <?php foreach($data->images as $item){ ?>
             <div class="item">
+                <div class="dropdown">
+                    <div class="edit glyphicon glyphicon-pencil dropdown-toggle" data-toggle="dropdown" ></div>
+                    <ul class="dropdown-menu">
+                        <li><a href="" ng-click="setCover(<?=$item->id?>,$event)">Сделать обложкой</a></li>
+                        <li><a href="" ng-click="remove(<?=$item->id?>,$event)">Удалить</a></li>
+                    </ul>
+                </div>
+                
                 <div class="image_preview">
                     <a class="fancybox" rel="group" href="/assets/adv/<?=$item->user_id?>/<?=$item->adv_id?>/<?=$item->name?>"><img src="/assets/adv/<?=$item->user_id?>/<?=$item->adv_id?>/thumb<?=$item->name?>"></a>
                 </div>
             </div>
         <?php } ?>
     </div>
+</div>
 @endsection

@@ -50,21 +50,30 @@ class AdvertisementController extends Controller{
     
     public function transfer_preview($id){
         $data = Seat::get($id);
-        echo json_encode($data);
-        /*return view('advertisement.edit.transfer_preview',[
-                "data"=>$data
-            ]);*/
+        echo json_encode($data);        
+    }
+    
+    public function transfer_remove($id, Request $post){
+        if(Adv_transfer::remove($id,$post->id)){
+            echo '{"status":"success"}';
+        }else{
+            echo '{"status":"error"}';
+        }
     }
     
     public function add_transfer($id, Request $post){
-        Adv_transfer::addNew($id,$post->id);
-        //p($post->id);
+        if(Adv_transfer::addNew($id,$post->id)){
+            echo '{"status":"success"}';
+        }else{
+            echo '{"status":"error"}';
+        }
     }
     
     public function edit_transfer($id){
         $transfers  = Adv_transfer::getSelected($id);
         
         $data = Transfer::getAll();
+        
         return view('advertisement.edit.transfer',['data'=>$data,'transfers'=>$transfers,'id'=>$id]);
     }
     
@@ -103,7 +112,7 @@ class AdvertisementController extends Controller{
         return view('advertisement.show',['data'=>$data,'reservations'=>$reserv,'count'=>$count]);
     }
     
-    public function create(Request $request){ 
+    public function create(Request $request){
         return View::make('advertisement.create',['types'=>Config::get('custom.types'),'errors'=>null,'post'=>null]);
     }
     
@@ -149,9 +158,29 @@ class AdvertisementController extends Controller{
         //return view('advertisement.edit.address',['id'=>$id,'data'=>$data]);
     }
     
+    public function setalbumcover($image_id,$adv_id){
+        if(Image::setCover($image_id,$adv_id)){
+            echo '{"status":"success"}';
+        }else{
+            echo '{"status":"error"}';
+        }
+        
+        //return view('advertisement.edit.photo',[]);
+    }
+    
+    public function removeimage($image_id){
+        if(Image::remove($image_id)){
+            echo '{"status":"success"}';
+        }else{
+            echo '{"status":"error"}';
+        }
+    }
+    
     public function edit_photo($id){
+        
         //$adertisement = new Advertisement();
         $data = Advertisement::getCurrent($id);
+        
         
         return view('advertisement.edit.photo',['data'=>$data,'id'=>$id]);
     }
