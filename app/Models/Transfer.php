@@ -7,6 +7,7 @@ use Validator;
 use Hash;
 
 use App\Http\Middleware\Auth;
+use App\Models\Adv_transfer;
 
 
 class Transfer extends Model{
@@ -15,7 +16,13 @@ class Transfer extends Model{
     /*public function advertisement(){    //связь с таблицей картинок
         return $this->hasOne('App\Models\Advertisement','id','adv_id');
     }*/
-
+    public static function getAdvList($id){
+        //$rows = self::where('user_id','=',Auth::user()->id)->where('user_id','=',Auth::user()->id)->orderBy('id','DESC')->get();
+        $rows = Adv_transfer::with('transfer')->where('adv_id','=',$id)->where('status','=','1')->get();
+        
+        return $rows;
+    }
+    
     public static function getMyList(){
         $rows = self::where('user_id','=',Auth::user()->id)->orderBy('id','DESC')->get();
         

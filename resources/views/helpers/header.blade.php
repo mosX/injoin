@@ -110,12 +110,19 @@
                 <li><a href="/logout/">Выход</a></li>
             <?php }else{ ?>
                 <li><a href="#" data-target="#loginModal" data-toggle="modal">Вход</a></li>
-                <li><a href="/">Регистрация</a></li>
+                <li><a href="#" data-target="#registrationModal" data-toggle="modal">Регистрация</a></li>
             <?php } ?>
         </ul>
     </div>
 </nav>
+@section('login')
+    @include('helpers.modals.login')
+@show
 
+@section('registration')
+    @include('helpers.modals.registration')
+@show
+<!--
     <style>
         #loginModal .modal-dialog{
             width:400px;
@@ -124,31 +131,9 @@
             color: black;
         }
     </style>
-    <script>
-        /*$('document').ready(function(){
-            $('#loginModal form').submit(function(){
-                var email = $('input[name=email]',this).val();
-                var password = $('input[name=password]',this).val();
-                
-                $.ajax({
-                    url:'/login',
-                    type:'POST',
-                    data:{email:email,password:password},
-                    success:function(msg){
-                        var json = JSON.parse(msg);
-                        if(json.status == 'success'){
-                            location.href = '/';
-                        }
-                    }
-                });
-                return false;
-            });
-        });*/
-    </script>
     
-    <script>
-        
-        app.controller('mainCtrl', function($scope,$http){
+    <script>        
+        app.controller('loginCtrl', function($scope,$http){
             $scope.login = function($event){
                 $.ajax({
                     url:'/login',
@@ -166,7 +151,7 @@
         });
     </script>
     <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-        <div class="modal-dialog" role="document" ng-controller="mainCtrl">
+        <div class="modal-dialog" role="document" ng-controller="loginCtrl">
             <div class="modal-content">
                 <div class="modal-header">
                     <button class="close" data-dismiss="modal">×</button>
@@ -209,3 +194,4 @@
         </div>
     </div>
 
+-->

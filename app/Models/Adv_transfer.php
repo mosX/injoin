@@ -17,7 +17,7 @@ class Adv_transfer extends Model{
         return $this->hasMany('App\Models\Seat','transfer_id','transfer_id');
     }
     
-    public function transfer(){    //связь с таблицей картинок
+    public function transfer(){ 
         return $this->hasOne('App\Models\Transfer','id','transfer_id');
     }
     

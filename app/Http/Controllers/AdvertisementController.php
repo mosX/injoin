@@ -128,8 +128,8 @@ class AdvertisementController extends Controller{
     }
     
     public function edit_common($id){
-        //$adertisement = new Advertisement();
         $data = Advertisement::getCurrent($id);
+        
 
         return view('advertisement.edit.common',['types'=>Config::get('app.types'),'data'=>$data,'id'=>$id]);
     }

@@ -3,12 +3,11 @@
 
 @section('content')
     <div class='page-heading'>Объявления</div>
-    <script>    
-        var home = angular.module('courseListApp',[]);
-        
-        home.directive('activityBtn', function (){
+    <script>
+        app.directive('activityBtn', function (){
             return function(scope,element,attrs){
                 $('input',element).click(function(){
+                    //sconsole.log('test');
                     var id = attrs.activityBtn;
                     
                     $.ajax({
@@ -32,12 +31,20 @@
             }
         });
 
-        home.controller('CourseListCtrl',function($scope){
+        app.controller('CourseListCtrl',function($scope){
             
         });
     </script>
-    
-    <div ng-app="courseListApp" ng-controller="CourseListCtrl">
+    <style>
+        .red{
+            color: red;
+        }
+        
+        .green{
+            color: green;
+        }
+    </style>
+    <div ng-controller="CourseListCtrl">
         <table class="table">
             <tbody>
                 @foreach($data as $item)
@@ -61,7 +68,8 @@
                             </ul>
                         </td>
                         <td>
-                            {{$item->start_date}} - {{$item->end_date}}
+                            <span class="{{strtotime($item->start_date) > time() ? 'red':'green' }}">{{date("Y-m-d H:i:s",strtotime($item->start_date))}}</span> - 
+                            <span class="{{strtotime($item->end_date) < time() ? 'red':'green' }}">{{$item->end_date}}</span>
                         </td>
                         <td activity-btn="{{$item->id}}">
                             @if($item->moderation)
@@ -77,6 +85,4 @@
             </tbody>
         </table>  
     </div>
-    
-   
 @endsection

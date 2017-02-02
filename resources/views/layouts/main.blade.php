@@ -26,12 +26,7 @@
 
         
     <body ng-app="app" >
-<script>
-/*$('document').ready(function(){
-console.log('34234234');
-swal("Here's a message!")
-});*/
-</script>
+
         <script>
             var app = angular.module('app', []);
         </script>

@@ -113,11 +113,12 @@
         }
     });
 </script>
+
 <div ng-controller="albumCtrl">
     <div class="form_block">
         <div class="preview">
             <div class='image' style='width:100%;height:100%;'>
-                <?php if($data){ ?>
+                <?php if($data->image){ ?>
                     <img src='/assets/adv/<?=Auth::user()->id?>/<?=$id?>/thumb{{$data->image->name}}'>
                 <?php }else{ ?>
                     <img src='/images/noimage.jpg'>

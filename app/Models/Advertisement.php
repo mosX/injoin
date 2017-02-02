@@ -75,10 +75,11 @@ class Advertisement extends Model{
         $data->description = $post->description;
         $data->type = $post->type;
         $data->max_members = $post->max_members;
+        $data->start_date = date("Y-m-d H:i:s",strtotime($post->start_date . ' '.$post->start_time));
+        $data->end_date = date("Y-m-d H:i:s",strtotime($post->end_date . ' '.$post->end_time));
         
         if($data->save()){
-            return true;
-            
+            return true;            
         }
     }
     

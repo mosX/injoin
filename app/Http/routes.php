@@ -45,7 +45,6 @@
                     Route::get('/photo/setcover/{image_id}/{adv_id}', ['uses' => 'AdvertisementController@setalbumcover']);
                     Route::get('/photo/remove/{image_id}', ['uses' => 'AdvertisementController@removeimage']);
                     
-                    
                     Route::get('/addphoto/{id}', [ 'as' => 'addphoto',  'uses' => 'AdvertisementController@addphoto_get']);
                     Route::post('/addphoto/{id}', [ 'as' => 'addphoto',  'uses' => 'AdvertisementController@addphoto_post']);
                             
@@ -80,13 +79,17 @@
                 Route::get('/show/{id}/', ['as'=>'show','uses'=> 'ReservationController@show']);
                 Route::get('/registration/{id}/', ['as'=>'registration','uses'=> 'ReservationController@registration']);
                 Route::post('/registration/{id}/', ['as'=>'registration','uses'=> 'ReservationController@registration_post']);
-            });            
-            
+                
+                Route::post('/registration/seat/{id}/', ['uses'=> 'ReservationController@reserv_seat']);
+                Route::get('/registration/gettransfer/{id}/', ['uses'=> 'ReservationController@gettransfer']);
+            });
         });
 
         Route::group(['middleware' => ['loggedOut']], function(){
             Route::get('login', 'LoginController@getIndex');
             Route::post('login', 'LoginController@postIndex'); 
+            
+            Route::post('/registration', 'RegistrationController@registrate'); 
         });
         
         Route::get('/', 'IndexController@index');
